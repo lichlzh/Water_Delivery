@@ -34,7 +34,7 @@ public class AddUserView {
 	private static ResultSet rs = null;
 	private static String userName;
 	private static int authority;
-	private static String[] listData = new String[]{"Ñ§Éú","ËÍË®Ê¦¸µ","¹ÜÀíÔ±"};
+	private static String[] listData = new String[]{"å­¦ç”Ÿ","é€æ°´å¸ˆå‚…","ç®¡ç†å‘˜"};
 	private static int selectedIndex=0;
 	/**
 	 * Create the application.
@@ -94,68 +94,86 @@ public class AddUserView {
 		JComboBox<String> comboBox=new JComboBox<String>();
 		comboBox.setBounds(184, 139, 75, 24);
 		for(String str:listData)
-			if(str!="¹ÜÀíÔ±"||authority==3)
+			if(str!="ç®¡ç†å‘˜"||authority==3)
 				comboBox.addItem(str);
 		comboBox.setSelectedIndex(0);
 		comboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                // Ö»´¦ÀíÑ¡ÖĞµÄ×´Ì¬
+                // åªå¤„ç†é€‰ä¸­çš„çŠ¶æ€
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                 	selectedIndex=comboBox.getSelectedIndex();
-                    System.out.println("Ñ¡ÖĞ: " + selectedIndex + " = " + comboBox.getSelectedItem());
+                    System.out.println("é€‰ä¸­: " + selectedIndex + " = " + comboBox.getSelectedItem());
                 }
             }
         });
 		panel.add(comboBox);
 		
-		JButton ChangePasswordButton = new JButton("Ìí¼Ó");
-		ChangePasswordButton.setBounds(185, 186, 63, 27);
-		ChangePasswordButton.addActionListener(new ChangePasswordListener());
-		panel.add(ChangePasswordButton);
+		JButton addUserButton = new JButton("æ·»åŠ ");
+		addUserButton.setBounds(185, 186, 63, 27);
+		addUserButton.addActionListener(new addUserListener());
+		panel.add(addUserButton);
 	}
-	public class ChangePasswordListener implements ActionListener{
+	public class addUserListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			String usrStr=usr.getText();
 			String pwdStr=pwd.getText();
-			String sql = "use water_delivery\nexec addUser "+'\''+usrStr+'\'' +','+'\''+pwdStr+'\''+','+selectedIndex+1+','+authority ;
+			String sql = "use water_delivery\nSELECT * FROM [User] WHERE userName="+'\''+usr+'\'' ;
 			System.out.println(sql);
 			try {
-				stat.executeUpdate(sql);
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(
-						AddUserFrame,
-                        "ÇëÖØĞÂÊäÈë",
-                        e1.toString().substring(48),
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-			}
-			if(pwdStr.equals(confirm.getText())) {
-				JOptionPane.showMessageDialog(
-						AddUserFrame,
-                        "Ìí¼Ó³É¹¦",
-                        "Ìí¼Ó³É¹¦",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-				AddUserFrame.dispose();
-				if(authority==3) {
-					AdministratorView window=new AdministratorView(stat,conn,userName);
-					window.AdministratorFrame.setVisible(true);
+				rs=stat.executeQuery(sql);
+				if(rs.next()) {
+					sql = "use water_delivery\nexec addUser "+'\''+usrStr+'\'' +','+'\''+pwdStr+'\''+','+selectedIndex+1+','+authority ;
+					System.out.println(sql);
+					try {
+						stat.executeUpdate(sql);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+						JOptionPane.showMessageDialog(
+								AddUserFrame,
+		                        "è¯·é‡æ–°è¾“å…¥",
+		                        e1.toString().substring(48),
+		                        JOptionPane.INFORMATION_MESSAGE
+		                );
+					}
+					if(pwdStr.equals(confirm.getText())) {
+						JOptionPane.showMessageDialog(
+								AddUserFrame,
+		                        "æ·»åŠ æˆåŠŸ",
+		                        "æ·»åŠ æˆåŠŸ",
+		                        JOptionPane.INFORMATION_MESSAGE
+		                );
+						AddUserFrame.dispose();
+						if(authority==3) {
+							AdministratorView window=new AdministratorView(stat,conn,userName);
+							window.AdministratorFrame.setVisible(true);
+						}
+						else {
+							LoginView window=new LoginView(stat,conn);
+							window.loginFrame.setVisible(true);
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(
+								AddUserFrame,
+		                        "è¯·é‡æ–°è¾“å…¥",
+		                        "ä¸¤æ¬¡è¾“å…¥å¯†ç ä¸åŒ",
+		                        JOptionPane.INFORMATION_MESSAGE
+		                );
+					}
 				}
 				else {
-					LoginView window=new LoginView(stat,conn);
-					window.loginFrame.setVisible(true);
+					JOptionPane.showMessageDialog(
+							AddUserFrame,
+	                        "ç”¨æˆ·å·²å­˜åœ¨",
+	                        "æ·»åŠ å¤±è´¥",
+	                        JOptionPane.INFORMATION_MESSAGE
+	                );
 				}
+			} catch (SQLException e2) {
+				e2.printStackTrace();
 			}
-			else {
-				JOptionPane.showMessageDialog(
-						AddUserFrame,
-                        "ÇëÖØĞÂÊäÈë",
-                        "Á½´ÎÊäÈëÃÜÂë²»Í¬",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-			}
+			
 		}
 	}
 
