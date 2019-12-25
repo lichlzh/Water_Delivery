@@ -73,7 +73,7 @@ public class DelivererFillInInfoView {
 		comboBox.setBounds(156, 146, 75, 24);
 		for(int i:listData)
 			comboBox.addItem(i);
-		comboBox.setSelectedIndex(0);
+		comboBox.setSelectedIndex(selectedIndex=0);
 		comboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {

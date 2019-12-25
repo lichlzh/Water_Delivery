@@ -14,9 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import waterDelivery.AdministratorView.logoutListener;
-import waterDelivery.AdministratorView.queryDelivererListener;
 import javax.swing.JLabel;
 
 
@@ -110,7 +107,7 @@ public class ConsumerView {
 		label2.setBounds(519, 177, 72, 18);
 		panel.add(label2);
 		
-		JButton logoutButton = new JButton("\u6CE8\u9500");
+		JButton logoutButton = new JButton("退出登录");
 		logoutButton.setBounds(755, 513, 113, 27);
 		logoutButton.addActionListener(new logoutListener());
 		panel.add(logoutButton);
@@ -142,24 +139,34 @@ public class ConsumerView {
 	public class createOrderListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(checkInfo()) {
-				String sql = "use water_delivery\nexec createOrder "+area+','+building+','+floor+','+room+','+selectedIndex;
-				System.out.println(sql);
-				try {
-					stat.executeUpdate(sql);
+				if(selectedIndex==0) {
 					JOptionPane.showMessageDialog(
 							ConsumerFrame,
-							"下单成功",
-							"下单成功",
-							JOptionPane.INFORMATION_MESSAGE
-						);
-				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(
-							ConsumerFrame,
-							e1.toString().substring(48),
+							"请选择桶数",
 							"下单失败",
 							JOptionPane.INFORMATION_MESSAGE
 						);
-					e1.printStackTrace();
+				}
+				else {
+					String sql = "use water_delivery\nexec createOrder "+area+','+building+','+floor+','+room+','+selectedIndex;
+					System.out.println(sql);
+					try {
+						stat.executeUpdate(sql);
+						JOptionPane.showMessageDialog(
+								ConsumerFrame,
+								"下单成功",
+								"下单成功",
+								JOptionPane.INFORMATION_MESSAGE
+							);
+					} catch (SQLException e1) {
+						JOptionPane.showMessageDialog(
+								ConsumerFrame,
+								e1.toString().substring(48),
+								"下单失败",
+								JOptionPane.INFORMATION_MESSAGE
+							);
+						e1.printStackTrace();
+					}
 				}
 			}
 			else {

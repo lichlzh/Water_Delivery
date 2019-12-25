@@ -24,7 +24,7 @@ public class ConsumerFillInInfoView {
     private static Connection conn = null;
     private static ResultSet rs = null;
     private static String userName;
-    private static int selectedArea=0,selectedBuilding=0,selectedFloor=0,selectedRoom=0;
+    private static int selectedArea,selectedBuilding,selectedFloor,selectedRoom;
 	/**
 	 * Create the application.
 	 */
@@ -96,8 +96,10 @@ public class ConsumerFillInInfoView {
 		buildingComboBox.addItem(0);
 		for(int i=(selectedArea-1)*4+1;i<=selectedArea*4;i++)
         	buildingComboBox.addItem(i);
-        buildingComboBox.setSelectedIndex(0);
-		buildingComboBox.setSelectedIndex((selectedBuilding+3)%4+1);
+		if (selectedBuilding==0)
+			buildingComboBox.setSelectedIndex(0);
+		else
+			buildingComboBox.setSelectedIndex((selectedBuilding+3)%4+1);
 		buildingComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {

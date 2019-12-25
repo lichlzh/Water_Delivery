@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 
 public class DealOrderView {
@@ -26,8 +27,8 @@ public class DealOrderView {
     private static ResultSet rs = null;
     private static String userName,delivererNumber;
     private static String orderList=null;
-    private static int selectedIndex=0;
-    private static List<String> orderNumber;
+    private static int selectedIndex;
+    private static List<String> orderNumber=null;
 	/**
 	 * Create the application.
 	 */
@@ -82,7 +83,7 @@ public class DealOrderView {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		comboBox.setSelectedIndex(0);
+		comboBox.setSelectedIndex(selectedIndex=0);
 		comboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -117,16 +118,32 @@ public class DealOrderView {
 	}
 	public class arriveListener implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			String sql = "use water_delivery\nexec serveOrder "+'\''+orderNumber.get(selectedIndex)+'\'' ;
-			System.out.println(sql);
-			try {
-				stat.executeUpdate(sql);
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			if(orderNumber==null||orderNumber.size()==0){
+				JOptionPane.showMessageDialog(
+						DealOrderFrame,
+						"暂无订单",
+						"送达失败",
+						JOptionPane.INFORMATION_MESSAGE
+					);
 			}
-			DealOrderFrame.dispose();
-			DelivererView window=new DelivererView(stat,conn,userName);
-			window.DelivererFrame.setVisible(true);
+			else {
+				String sql = "use water_delivery\nexec serveOrder "+'\''+orderNumber.get(selectedIndex)+'\'' ;
+				System.out.println(sql);
+				try {
+					stat.executeUpdate(sql);
+					JOptionPane.showMessageDialog(
+							DealOrderFrame,
+							"订单已送达",
+							"送达成功",
+							JOptionPane.INFORMATION_MESSAGE
+						);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				DealOrderFrame.dispose();
+				DelivererView window=new DelivererView(stat,conn,userName);
+				window.DelivererFrame.setVisible(true);
+			}
 		}
 	}
 }

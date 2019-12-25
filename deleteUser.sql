@@ -5,6 +5,9 @@ go
 create procedure deleteUser(@usr varchar(50))
 as
 BEGIN
+	set xact_abort on
+	BEGIN TRANSACTION
+
 	declare @ath int
 	set @ath=-1
 	SELECT @ath=authority FROM [User] WHERE userName=@usr
@@ -35,4 +38,5 @@ BEGIN
 			RAISERROR('该用户不存在',16,1)
 			ROLLBACK TRANSACTION
 		end
+	COMMIT TRANSACTION
 END

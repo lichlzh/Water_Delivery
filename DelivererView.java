@@ -9,10 +9,8 @@ import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import waterDelivery.AdministratorView.logoutListener;
 
 
 public class DelivererView {
@@ -78,7 +76,7 @@ public class DelivererView {
 		queryOrderButton.addActionListener(new queryOrderListener());
 		panel.add(queryOrderButton);
 		
-		JButton logoutButton = new JButton("\u6CE8\u9500");
+		JButton logoutButton = new JButton("ÍË³öµÇÂ¼");
 		logoutButton.setBounds(755, 513, 113, 27);
 		logoutButton.addActionListener(new logoutListener());
 		panel.add(logoutButton);

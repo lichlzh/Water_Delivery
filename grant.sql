@@ -1,0 +1,2 @@
+use water_delivery
+GRANT SELECT,INSERT,UPDATE,DELETE TO sa

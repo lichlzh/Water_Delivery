@@ -31,7 +31,7 @@ public class RegisterView {
     private static Connection conn = null;
 	private static ResultSet rs = null;
 	private static String[] listData = new String[]{"学生","送水师傅"};
-	private static int selectedIndex=0;
+	private static int selectedIndex;
 	private JTextField textField;
 	
 	/**
@@ -91,7 +91,7 @@ public class RegisterView {
 		comboBox.setBounds(184, 139, 75, 24);
 		for(String str:listData)
 			comboBox.addItem(str);
-		comboBox.setSelectedIndex(0);
+		comboBox.setSelectedIndex(selectedIndex=0);
 		comboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {

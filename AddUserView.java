@@ -34,8 +34,8 @@ public class AddUserView {
 	private static ResultSet rs = null;
 	private static String userName;
 	private static int authority;
-	private static String[] listData = new String[]{"å­¦ç”Ÿ","é€æ°´å¸ˆå‚…","ç®¡ç†å‘˜"};
-	private static int selectedIndex=0;
+	private static String[] listData = new String[]{"Ñ§Éú","ËÍË®Ê¦¸µ","¹ÜÀíÔ±"};
+	private static int selectedIndex;
 	/**
 	 * Create the application.
 	 */
@@ -94,22 +94,22 @@ public class AddUserView {
 		JComboBox<String> comboBox=new JComboBox<String>();
 		comboBox.setBounds(184, 139, 75, 24);
 		for(String str:listData)
-			if(str!="ç®¡ç†å‘˜"||authority==3)
+			if(str!="¹ÜÀíÔ±"||authority==3)
 				comboBox.addItem(str);
-		comboBox.setSelectedIndex(0);
+		comboBox.setSelectedIndex(selectedIndex=0);
 		comboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                // åªå¤„ç†é€‰ä¸­çš„çŠ¶æ€
+                // Ö»´¦ÀíÑ¡ÖĞµÄ×´Ì¬
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                 	selectedIndex=comboBox.getSelectedIndex();
-                    System.out.println("é€‰ä¸­: " + selectedIndex + " = " + comboBox.getSelectedItem());
+                    System.out.println("Ñ¡ÖĞ: " + selectedIndex + " = " + comboBox.getSelectedItem());
                 }
             }
         });
 		panel.add(comboBox);
 		
-		JButton addUserButton = new JButton("æ·»åŠ ");
+		JButton addUserButton = new JButton("Ìí¼Ó");
 		addUserButton.setBounds(185, 186, 63, 27);
 		addUserButton.addActionListener(new addUserListener());
 		panel.add(addUserButton);
@@ -122,8 +122,8 @@ public class AddUserView {
 			System.out.println(sql);
 			try {
 				rs=stat.executeQuery(sql);
-				if(rs.next()) {
-					sql = "use water_delivery\nexec addUser "+'\''+usrStr+'\'' +','+'\''+pwdStr+'\''+','+selectedIndex+1+','+authority ;
+				if(!rs.next()) {
+					sql = "use water_delivery\nexec addUser "+'\''+usrStr+'\'' +','+'\''+pwdStr+'\''+','+(selectedIndex+1)+','+authority ;
 					System.out.println(sql);
 					try {
 						stat.executeUpdate(sql);
@@ -131,7 +131,7 @@ public class AddUserView {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(
 								AddUserFrame,
-		                        "è¯·é‡æ–°è¾“å…¥",
+		                        "ÇëÖØĞÂÊäÈë",
 		                        e1.toString().substring(48),
 		                        JOptionPane.INFORMATION_MESSAGE
 		                );
@@ -139,8 +139,8 @@ public class AddUserView {
 					if(pwdStr.equals(confirm.getText())) {
 						JOptionPane.showMessageDialog(
 								AddUserFrame,
-		                        "æ·»åŠ æˆåŠŸ",
-		                        "æ·»åŠ æˆåŠŸ",
+		                        "Ìí¼Ó³É¹¦",
+		                        "Ìí¼Ó³É¹¦",
 		                        JOptionPane.INFORMATION_MESSAGE
 		                );
 						AddUserFrame.dispose();
@@ -156,8 +156,8 @@ public class AddUserView {
 					else {
 						JOptionPane.showMessageDialog(
 								AddUserFrame,
-		                        "è¯·é‡æ–°è¾“å…¥",
-		                        "ä¸¤æ¬¡è¾“å…¥å¯†ç ä¸åŒ",
+		                        "ÇëÖØĞÂÊäÈë",
+		                        "Á½´ÎÊäÈëÃÜÂë²»Í¬",
 		                        JOptionPane.INFORMATION_MESSAGE
 		                );
 					}
@@ -165,8 +165,8 @@ public class AddUserView {
 				else {
 					JOptionPane.showMessageDialog(
 							AddUserFrame,
-	                        "ç”¨æˆ·å·²å­˜åœ¨",
-	                        "æ·»åŠ å¤±è´¥",
+	                        "ÓÃ»§ÒÑ´æÔÚ",
+	                        "Ìí¼ÓÊ§°Ü",
 	                        JOptionPane.INFORMATION_MESSAGE
 	                );
 				}

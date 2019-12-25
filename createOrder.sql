@@ -6,6 +6,8 @@ go
 create procedure createOrder(@ar int,@bu int,@fl int,@ro int,@cnt int)
 as
 BEGIN
+	set xact_abort on
+	BEGIN TRANSACTION
 	if not exists(SELECT delivererNumber FROM InCharge WHERE area=@ar)
 		begin
 			RAISERROR('ÔÝÎÞÊ¦¸µ',16,1)
@@ -37,4 +39,5 @@ BEGIN
 		INSERT INTO ReceiveOrder VALUES(@ID,@dn)
 		INSERT INTO DeliverTo VALUES(@ID,null,@ar,@bu,@fl,@ro,@cnt)
 	end
+	COMMIT TRANSACTION
 END
